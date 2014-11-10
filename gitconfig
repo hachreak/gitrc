@@ -1,0 +1,13 @@
+[alias]
+  k = log --graph --decorate --pretty=oneline --abbrev-commit
+  ka = log --graph --decorate --pretty=oneline --abbrev-commit --all
+  ff = merge --ff-only
+[user]
+  name = Leonardo Rossi
+  email = leonardo.r@cern.ch
+[color]
+  ui = auto
+[core]
+  quotepath = off
+  editor = vim
+
