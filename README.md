@@ -27,5 +27,6 @@ Shortcuts
 * **gs** - git status
 * **gb** - git branch
 * **gc** - git checkout
-* **gk** - git ka - see nice version of git log
+* **gk** - **git ka** - see nice version of git log
 * **ga** - git add .
+* **git ff origin/master** - git fast-forwarding
