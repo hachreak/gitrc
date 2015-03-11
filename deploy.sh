@@ -4,9 +4,9 @@ DIR=`pwd`
 
 # Backup git configuration
 BCK=$HOME/.git.backup
-[ -e "$BCK" ] && echo "[Error] Backup directory already exists! Remove $BCK to continue." && exit 1
+[ -e "$BCK" ] && echo "[Warning] Backup directory already exists in $BCK!"
 [ ! -e "$BCK" ] && echo "[Backup] Start backup old git environment." && mkdir $BCK
-[ -e "$HOME/.gitconfig" ] && echo "[Backup] backup ~/.gitconfig" && mv ~/.gitconfig $BCK/
+[ ! -e "$BCK" ] && [ -e "$HOME/.gitconfig" ] && echo "[Backup] backup ~/.gitconfig" && mv ~/.gitconfig $BCK/
 
 # Link the current gitconfig
 cd ~/
