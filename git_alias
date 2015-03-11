@@ -1,5 +1,5 @@
 alias gs="git status"
-alias gb="git branch"
+alias gb="git branch -vv"
 alias gc="git checkout"
 alias gk="git ka"
 alias ga="git add ."
