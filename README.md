@@ -30,4 +30,5 @@ Shortcuts
 * **gk** - **git ka** - see nice version of git log
 * **ga** - git add .
 * **git ff origin/master** - git fast-forwarding
-* **gbs** or **git-branches-status** - show list of branches that are ahead or behind of the tracked branch and of how many commits.
+* **gbs** or **git-branches-status** - show list of branches that are ahead or behind of the tracked branch and display how many commits.
+* **gfa** or **git-find-ancestor-branch** - show info about ancestor branches. Useful if you need to know ancestor branch and if your branch needs rebasing displaying how much commits differ from them.
