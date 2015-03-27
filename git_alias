@@ -12,7 +12,7 @@ git-branches-status(){
     while read b; do
       if r=$(git config --get branch.$b.remote); then
         m=$(git config --get branch.$b.merge)
-        count=`git rev-list --left-right $b..$r/${m##*/} | wc -l`
+        count=`git rev-list --left-right $b..$r/${m##*/}|wc -l`
         if [ $count -ne 0 ]; then
           echo -e "${blue}[$count]${NC} $b -> $r/${m##*/}"
         fi
@@ -20,12 +20,4 @@ git-branches-status(){
     done
 }
 
-git-find-ancestor-branch(){
-  list_branches=`git log --branches --pretty="%d" | head -n2 | tail -n1 | awk -F\( '{print $2}' | awk -F\) '{print $1}' | tr "," " "`
-  first_branch=`echo "$list_branches" | awk '{print $1}'`
-  count=`git rev-list --left-right HEAD..$first_branch | wc -l`
-  echo -e "${blue}[$count]${NC} $list_branches"
-}
-
 alias gbs="git-branches-status"
-alias gfa="git-find-ancestor-branch"
