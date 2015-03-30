@@ -3,6 +3,8 @@ alias gb="git branch -vv"
 alias gc="git checkout"
 alias gk="git ka"
 alias ga="git add ."
+alias gbm="git branch --merged"
+alias gbnm="git branch --no-merged"
 
 blue='\e[0;34m'
 NC='\e[0m' # No Color'
