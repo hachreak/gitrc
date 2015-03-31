@@ -1,11 +1,3 @@
-alias gs="git status -bs"
-alias gb="git branch -vv"
-alias gc="git checkout"
-alias gk="git ka"
-alias ga="git add ."
-alias gbm="git branch --merged"
-alias gbnm="git branch --no-merged"
-
 blue='\e[0;34m'
 NC='\e[0m' # No Color'
 
@@ -22,4 +14,15 @@ git-branches-status(){
     done
 }
 
+
+alias ga="git add ."
+alias gb="git branch -vv"
+alias gbm="git branch --merged"
+alias gbnm="git branch --no-merged"
 alias gbs="git-branches-status"
+alias gcck="git checkout"
+alias gccb="gc -t -b"
+alias gcoa="git commit -a -s"
+alias gcoaa="git commit -a -s --amend"
+alias gk="git ka"
+alias gs="git status -bs"
