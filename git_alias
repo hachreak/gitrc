@@ -1,3 +1,5 @@
+#!/bin/bash
+
 blue='\e[0;34m'
 NC='\e[0m' # No Color'
 
@@ -14,6 +16,26 @@ git-branches-status(){
     done
 }
 
+# Track branch -> $remote.branch
+# e.g.
+#   To track this branch to upstream/foo:
+#     git-track upstream foo
+#   To track this branch "thisbranch" to upstream/thisbranch
+#     git-track upstream
+#   To track this branch "thisbranch" to origin/thisbranch
+#     git-track
+#
+git_track(){
+  remote=${1:-origin}
+  tracking_default=`git symbolic-ref --short HEAD`
+  tracking=${2:-$tracking_default}
+  # set remote
+  git config branch.$tracking.remote $remote
+  # set remote branch to track
+  git config branch.$tracking.merge refs/heads/$tracking
+  echo "tracking $remote/$tracking"
+}
+
 
 alias ga="git add ."
 alias gb="git branch -vv"
@@ -21,8 +43,9 @@ alias gbm="git branch --merged"
 alias gbnm="git branch --no-merged"
 alias gbs="git-branches-status"
 alias gcck="git checkout"
-alias gccb="gcck -t -b"
+alias gccb="gcck -b"
 alias gcoa="git commit -a -s"
 alias gcoaa="gcoa --amend"
 alias gk="git ka"
 alias gs="git status -bs"
+alias gt="git_track"
