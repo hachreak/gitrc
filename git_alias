@@ -3,7 +3,7 @@
 blue='\e[0;34m'
 NC='\e[0m' # No Color'
 
-git-branches-status(){
+git_branches_status(){
   git for-each-ref --format='%(refname:short)' refs/heads/* | \
     while read b; do
       if r=$(git config --get branch.$b.remote); then
@@ -41,7 +41,7 @@ alias ga="git add ."
 alias gb="git branch -vv"
 alias gbm="git branch --merged"
 alias gbnm="git branch --no-merged"
-alias gbs="git-branches-status"
+alias gbs="git_branches_status"
 alias gcck="git checkout"
 alias gccb="gcck -b"
 alias gcoa="git commit -a -s"
