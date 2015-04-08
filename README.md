@@ -30,10 +30,10 @@ Shortcuts
 * **gbnm [branch]** - lists branches not merged into [branch]
 * **gbs** or **git-branches-status** - show list of branches that are ahead or behind of the tracked branch and of how many commits.
 * **gcck** - git checkout
-* **gccb** - git checkout -t -b
+* **gccb** - git checkout -b
 * **gcoa** - git commit -a -s
 * **gcoaa** - git commit -a -s --amend
 * **git k** - see nice version of git log
-* **gk** - **git ka** - see nice version of git log for all branches
+* **gk** or **git ka** - see nice version of git log for all branches
 * **git ff origin/master** - git fast-forwarding
 * **gs** - git status
