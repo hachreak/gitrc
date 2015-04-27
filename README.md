@@ -29,12 +29,18 @@ Shortcuts
 * **gbm [branch]** - lists branches already merged into [branch] (default: the active branch). Useful to find which branch can be deleted because merged.
 * **gbnm [branch]** - lists branches not merged into [branch]
 * **gbs** or **git-branches-status** - show list of branches that are ahead or behind of the tracked branch and of how many commits.
-* **gcck** - git checkout
 * **gccb** - git checkout -b
+* **gcck** - git checkout
 * **gcoa** - git commit -a -s
 * **gcoaa** - git commit -a -s --amend
+* **gdhh** - git diff HEAD^ HEAD
+* **gfa** - git fetch --all
+* **git co** - git checkout
+* **git f** - git fetch
+* **git ff origin/master** - git fast-forwarding
 * **git k** - see nice version of git log
 * **gk** or **git ka** - see nice version of git log for all branches
-* **git ff origin/master** - git fast-forwarding
+* **gp** - git push -f
+* **gpo** - git push -f origin
 * **gs** - git status
 * **gt** or **git_track** [remote] [remote_branch] - set remote tracked branch (without arguments, it set as tracked branch from origin with the same name of active branch)

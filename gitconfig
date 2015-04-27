@@ -2,6 +2,8 @@
   k = log --graph --decorate --pretty=oneline --abbrev-commit
   ka = log --graph --decorate --pretty=oneline --abbrev-commit --all
   ff = merge --ff-only
+  co = checkout
+  f = fetch
 [user]
   name = Leonardo Rossi
   email = leonardo.r@cern.ch
