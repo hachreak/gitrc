@@ -36,6 +36,26 @@ git_track(){
   echo "tracking $remote/$tracking"
 }
 
+# On conflicts (e.g. on rebasing), if the HEAD sets as "Deleted" and in your
+# branch is "Updated".
+#
+# e.g.
+#      laptop> gs
+#      DU /path/to/file1
+#      DU /path/to/file2
+#      DU /path/to/file3
+#      UU /path/to/file3
+#
+# The function set files 1,2,3 as "Deleted".
+#
+#      laptop> git_conflicts_delete
+git_resolve_conflicts_delete(){
+  FILES_SET_AS_DELETED=`gs|grep ^D|awk '{print $2}'`
+  for i in $FILES_SET_AS_DELETED; do
+    git rm $i;
+  done
+}
+
 
 alias ga="git add ."
 alias gb="git branch -vv"
