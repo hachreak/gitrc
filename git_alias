@@ -1,8 +1,79 @@
 #!/bin/bash
+#
+# >>> Copyright
+#
+# Leonardo Rossi <leonardo.rossi@studenti.unipr.it>
+#
+# Copyright (C) 2015 Leonardo Rossi.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+# General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, see <http://www.gnu.org/licenses/>.
+#
+# Git utils
 
 blue='\e[0;34m'
 NC='\e[0m' # No Color'
 
+# Git sync branch.
+# Syncronize the master branch with remote branch.
+# In case remote master is different from origin, than sync also the origin
+# Param:
+#  1. (optional) branch to sync. Default: master
+git_sync_local_branch(){
+  BRANCH=${1:-master}
+  # update only if there is not changes not committed
+  ! git diff --quiet HEAD &&  return
+
+  # fetch all repositories
+  git fetch --all
+
+  # get tracked branch
+  REMOTE_REPO_BRANCH=`git rev-parse --abbrev-ref --symbolic-full-name @{u}`
+  git checkout $BRANCH
+  if [ $? -eq 0 ]; then
+    REMOTE_BRANCH=`echo $REMOTE_REPO_BRANCH | awk -F"/" '{print $2}'`
+    REMOTE_REPO=`echo $REMOTE_REPO_BRANCH | awk -F"/" '{print $1}'`
+
+    # fast-forward from remote branch
+    git merge --ff-only $REMOTE_REPO/$REMOTE_BRANCH
+
+    # if remote is not origin, then sync the origin
+    if [ $REMOTE_REPO != 'origin' ]; then
+      git push origin $BRANCH
+    fi
+  fi
+}
+
+# Git sync all master of local repositories.
+# Sync all local master repositories with remote.
+# Note: (call git_sync_local_branch for every repository and sync the master
+#        branch).
+git_sync_local_master_repositories(){
+  REPOSOTORIES=`ls -1d */.git|awk -F"/" '{print $1}'`
+
+  HOME_DIR=`pwd`
+  for i in $REPOSOTORIES; do
+    echo -e "${blue}[sync]${NC} $i"
+    # go to repository
+    cd $i
+    git_sync_local_branch
+    # return to home
+    cd $HOME_DIR
+  done
+}
+
+
+# Show branch status (which branch need to be sync with remote branch)
 git_branches_status(){
   git for-each-ref --format='%(refname:short)' refs/heads/* | \
     while read b; do
