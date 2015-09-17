@@ -37,9 +37,9 @@ git_sync_local_branch(){
   # fetch all repositories
   git fetch --all
 
+  git checkout $BRANCH
   # get tracked branch
   REMOTE_REPO_BRANCH=`git rev-parse --abbrev-ref --symbolic-full-name @{u}`
-  git checkout $BRANCH
   if [ $? -eq 0 ]; then
     REMOTE_BRANCH=`echo $REMOTE_REPO_BRANCH | awk -F"/" '{print $2}'`
     REMOTE_REPO=`echo $REMOTE_REPO_BRANCH | awk -F"/" '{print $1}'`
