@@ -25,6 +25,45 @@ green='\e[0;31m'
 blue='\e[0;34m'
 NC='\e[0m' # No Color'
 
+# Show the list of repository that have some branch currently merged.
+#
+# e.g. in src/ you have your list of repositories
+#    > git_find_merged_branch_in_repositories
+#    [blinker]
+#    develop
+#    * master
+#    [invenio-base]
+#    3482_remove_plotextrator
+#    * master
+#
+# In this case you can remove (using `gbr`) develop branch from `blinker`
+# project and `3482_remove_plotextrator` from `invenio-base` project.
+#
+git_find_merged_branch_in_repositories(){
+  REPOSOTORIES=`ls -1d */.git|awk -F"/" '{print $1}'`
+
+  HOME_DIR=`pwd`
+  for i in $REPOSOTORIES; do
+    # go to repository
+    cd $i
+    if [ `git branch --merged | wc -l` -gt 1 ]; then
+      CURRENT_BRANCH=`git rev-parse --abbrev-ref HEAD`
+      echo -e "[${blue}$i${NC}]"
+      git branch --merged
+    fi
+    # return to home
+    cd $HOME_DIR
+  done
+}
+
+# Remove a branch from the repository.
+# Note: it can be removed only if already merged in current branch.
+#       to remove also the tracket branch, add `-r` at the end of command.
+#
+#    e.g. $> gbr fuu_branch -r
+#
+# It will remove fuu_branch from local branch and the fuu_branch tracked branch.
+#
 git_branch_remove(){
   # check if branch exists
   [ "$#" -lt 1 ] || [ `git branch | grep $1 | wc -l` -eq 0 ] && echo -e "[${red}ERROR${NC}] branch $1 not found" && return 1
