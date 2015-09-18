@@ -28,6 +28,7 @@ Shortcuts
 * **gb** - git branch
 * **gbm [branch]** - lists branches already merged into [branch] (default: the active branch). Useful to find which branch can be deleted because merged.
 * **gbnm [branch]** - lists branches not merged into [branch]
+* **gbr** or **git_branch_remove** - Remove a specific branch (only if already merged in current branch). To automatically remove also the tracked branch, add `-r` at the end (e.g. `gbr fuu_branch -r`).
 * **gbs** or **git-branches-status** - show list of branches that are ahead or behind of the tracked branch and of how many commits.
 * **gccb** - git checkout -b
 * **gcck** - git checkout

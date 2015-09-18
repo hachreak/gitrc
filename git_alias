@@ -21,8 +21,26 @@
 #
 # Git utils
 
+green='\e[0;31m'
 blue='\e[0;34m'
 NC='\e[0m' # No Color'
+
+git_branch_remove(){
+  # check if branch exists
+  [ "$#" -lt 1 ] || [ `git branch | grep $1 | wc -l` -eq 0 ] && echo -e "[${red}ERROR${NC}] branch $1 not found" && return 1
+  # check if the branch is already merged
+  [ `git branch --merged | grep $1 | wc -l` -eq 0 ] && echo -e "[${red}ERROR${NC}] branch $1 not merged" && return 1
+  # remove remote branch
+  if [ "$2" = "-r" ]; then
+    REMOTE_REPO_BRANCH=`git rev-parse --abbrev-ref --symbolic-full-name $1@{u}`
+    [ $? -ne 0 ] && echo -e "[${red}ERROR${NC}] remote branch for $1 not found" && return 1
+    REMOTE_BRANCH=`echo $REMOTE_REPO_BRANCH | awk -F"/" '{print $2}'`
+    REMOTE_REPO=`echo $REMOTE_REPO_BRANCH | awk -F"/" '{print $1}'`
+    git push $REMOTE_REPO :${REMOTE_BRANCH} && echo -e "[${green}OK${NC}] remove branch $REMOTE_REPO/${REMOTE_BRANCH} removed"
+  fi
+  # remove local branch
+  git branch -d $1 && echo -e "[${green}OK${NC}] local branch $1 removed"
+}
 
 # Git sync branch.
 # Syncronize the master branch with remote branch.
@@ -132,6 +150,7 @@ alias ga="git add ."
 alias gb="git branch -vv"
 alias gbm="git branch --merged"
 alias gbnm="git branch --no-merged"
+alias gbr="git_branch_remove"
 alias gbs="git_branches_status"
 alias gccb="gcck -b"
 alias gcck="git checkout"
