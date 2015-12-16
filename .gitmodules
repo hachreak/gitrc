@@ -1,3 +1,6 @@
 [submodule "plugins/git-prompt"]
 	path = plugins/git-prompt
 	url = git://github.com/lvv/git-prompt.git
+[submodule "plugins/bash-git-prompt"]
+	path = plugins/bash-git-prompt
+	url = https://github.com/magicmonty/bash-git-prompt.git

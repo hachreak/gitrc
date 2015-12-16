@@ -46,12 +46,16 @@ fi
 cd $DIR
 git submodule init
 git submodule update
-# Install plugins
+# DEPRECATED plugin warning
 if [ -n "`grep "Enable git-promt" ~/.bashrc`" ]; then
-  echo "[Warning] Git-prompt already installed in ~/.bashrc"
+  echo "[Warning] Please remove git-prompt import ~/.bashrc"
+fi
+# Install plugins
+if [ -n "`grep "Enable bash-git-prompt" ~/.bashrc`" ]; then
+  echo "[Warning] Bash-Git-Prompt already installed in ~/.bashrc"
 else
-  echo "Install git-prompt"
-  echo "# Enable git-promt" >> ~/.bashrc
-  echo "[[ \$- == *i* ]] && . $DIR/plugins/git-prompt/git-prompt.sh" >> ~/.bashrc
+  echo "Install bash-git-prompt"
+  echo "# Enable bash-git-prompt" >> ~/.bashrc
+  echo "[[ \$- == *i* ]] && . $DIR/plugins/bash-git-prompt/gitprompt.sh" >> ~/.bashrc
 fi
 
