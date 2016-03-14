@@ -134,8 +134,12 @@ git_sync_local_branch(){
 # Sync all local master repositories with remote.
 # Note: (call git_sync_local_branch for every repository and sync the master
 #        branch).
+# Note: to have a list of repositories, call `git_find_my_repositories myuser`
+#
+#   e.g. > git_sync_local_master_repositories `git_find_my_repositories myuser`
+#
 git_sync_local_master_repositories(){
-  REPOSOTORIES=`ls -1d */.git|awk -F"/" '{print $1}'`
+  REPOSOTORIES="$@"
 
   HOME_DIR=`pwd`
   for i in $REPOSOTORIES; do
