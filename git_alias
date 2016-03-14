@@ -33,12 +33,17 @@ NC='\e[0m' # No Color'
 #      project_2
 #      project_4
 #
+# You can also specify the remote you want:
+# e.g. to find all `upstream`:
+#    > git_find_my_repositories mynickname upstream
+#
 git_find_my_repositories(){
   REPOSOTORIES=`ls -1d */.git|awk -F"/" '{print $1}'`
-  ORIGIN="$1"
+  USER="$1"
+  ORIGIN=${2:-origin}
   for i in $REPOSOTORIES; do
     cd $i
-    if [ "`git remote -v | grep "${ORIGIN}/${i}" | wc -l`" -ne 0 ]; then
+    if [ "`git remote -v | grep "^${ORIGIN}" | grep "${USER}/${i}" | wc -l`" -ne 0 ]; then
       echo $i
     fi
     cd ..
