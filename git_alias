@@ -35,6 +35,7 @@ NC='\e[0m' # No Color'
 #
 git_find_my_repositories(){
   REPOSOTORIES=`ls -1d */.git|awk -F"/" '{print $1}'`
+  ORIGIN="$1"
   for i in $REPOSOTORIES; do
     cd $i
     if [ "`git remote -v | grep "${ORIGIN}/${i}" | wc -l`" -ne 0 ]; then
