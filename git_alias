@@ -25,6 +25,25 @@ green='\e[0;31m'
 blue='\e[0;34m'
 NC='\e[0m' # No Color'
 
+# List all my repositories.
+#
+# e.g. in src/ you have your list of repositories
+#    > git_find_my_repositories mynickname
+#      project_1
+#      project_2
+#      project_4
+#
+git_find_my_repositories(){
+  REPOSOTORIES=`ls -1d */.git|awk -F"/" '{print $1}'`
+  for i in $REPOSOTORIES; do
+    cd $i
+    if [ "`git remote -v | grep "${ORIGIN}/${i}" | wc -l`" -ne 0 ]; then
+      echo $i
+    fi
+    cd ..
+  done
+}
+
 # Show the list of repository that have some branch currently merged.
 #
 # e.g. in src/ you have your list of repositories
@@ -196,10 +215,11 @@ alias gcck="git checkout"
 alias gcoa="git commit -a -s"
 alias gcoaa="gcoa --amend"
 alias gdhh="git diff HEAD^ HEAD"
+alias gfa="git fetch --all"
+alias gfmr="git_find_my_repositories"
+alias gg="git grep"
 alias gk="git ka"
 alias gp="git push -f"
 alias gpo="gp origin"
 alias gs="git status -bs"
 alias gt="git_track"
-alias gfa="git fetch --all"
-alias gg="git grep"

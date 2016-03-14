@@ -40,6 +40,7 @@ Shortcuts
 * **git f** - git fetch
 * **git ff origin/master** - git fast-forwarding
 * **git k** - see nice version of git log
+* **git_find_my_repositories** - find all my repositories (checking the remote `origin`)
 * **git_find_merged_branch_in_repositories** - Find branches that can be removed
 * **git_resolve_conflicts_delete** - Resolve conflict on deleted files on master branch
 * **gk** or **git ka** - see nice version of git log for all branches
