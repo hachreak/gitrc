@@ -33,19 +33,21 @@ Shortcuts
 * **gccb** - git checkout -b
 * **gcck** - git checkout
 * **gcoa** - git commit -a -s
-* **gcoane** - git commit -a -s --no-edit
 * **gcoaa** - git commit -a -s --amend
 * **gcoaane** - git commit -a -s --amend --no-edit
+* **gcoane** - git commit -a -s --no-edit
 * **gdhh** - git diff HEAD^ HEAD
 * **gfa** - git fetch --all
+* **gfmr** or **git_repos_find_mine** `username` - find all repositories associated with the user `username` (checking the remote `origin`). Note: you can also specify with remote repository check (e.g. `gfmr myuser upstream`).
 * **git co** - git checkout
 * **git f** - git fetch
 * **git ff origin/master** - git fast-forwarding
 * **git k** - see nice version of git log
-* **gfmr** or **git_find_my_repositories** `username` - find all repositories associated with the user `username` (checking the remote `origin`). Note: you can also specify with remote repository check (e.g. `gfmr myuser upstream`).
-* **git_find_merged_branch_in_repositories** - Find branches that can be removed
+* **git_repo_is_mine `username`** - Check if the repository is mine
+* **git_repos_find_mine `username`** - find which repository inside the current directory are mine
+* **git_repos_find_merged_branch** - Find branches that can be removed
+* **git_repos_sync_local_master** - Sync all local master brances with the remote ones. You need to pass the list of branches (you can also use `git_repos_find_mine myuser` to automatically generate it)
 * **git_resolve_conflicts_delete** - Resolve conflict on deleted files on master branch
-* **git_sync_local_master_repositories** - Sync all local master brances with the remote ones. You need to pass the list of branches (you can also use `git_find_my_repositories myuser` to automatically generate it)
 * **gk** or **git ka** - see nice version of git log for all branches
 * **gp** - git push -f
 * **gpo** - git push -f origin

@@ -29,7 +29,7 @@ NC='\e[0m' # No Color'
 #
 # The function looks the list of remote repositories and find if the `origin`
 # repository contains the pattern `user/repository_name.git`
-git_is_my_repository(){
+git_repo_is_mine(){
   USER="$1"
   ORIGIN=${2:-origin}
   DEFAULT_REPOSITORY=$(basename `pwd`)
@@ -41,22 +41,25 @@ git_is_my_repository(){
 #
 # Imagine you want to know which of them are your.
 # e.g. in src/ you have your list of repositories
-#    > git_find_my_repositories mynickname
+#    > git_repos_find_mine mynickname
 #      project_1
 #      project_2
 #      project_4
 #
 # You can also specify the remote you want:
 # e.g. to find all `upstream`:
-#    > git_find_my_repositories mynickname upstream
+#    > git_repos_find_mine mynickname upstream
 #
-git_find_my_repositories(){
+git_repos_find_mine(){
   USER="$1"
+  if [ -z $USER ]; then
+    return 1
+  fi
   ORIGIN=${2:-origin}
   REPOSOTORIES=`ls -1d */.git|awk -F"/" '{print $1}'`
   for i in $REPOSOTORIES; do
     cd $i
-    git_is_my_repository $USER $ORIGIN $i && echo $i
+    git_repo_is_mine $USER $ORIGIN $i && echo $i
     cd ..
   done
 }
@@ -64,7 +67,7 @@ git_find_my_repositories(){
 # Show the list of repository that have some branch currently merged.
 #
 # e.g. in src/ you have your list of repositories
-#    > git_find_merged_branch_in_repositories
+#    > git_repos_find_merged_branch
 #    [blinker]
 #    develop
 #    * master
@@ -75,7 +78,7 @@ git_find_my_repositories(){
 # In this case you can remove (using `gbr`) develop branch from `blinker`
 # project and `3482_remove_plotextrator` from `invenio-base` project.
 #
-git_find_merged_branch_in_repositories(){
+git_repos_find_merged_branch(){
   REPOSOTORIES=`ls -1d */.git|awk -F"/" '{print $1}'`
 
   HOME_DIR=`pwd`
@@ -151,11 +154,11 @@ git_sync_local_branch(){
 # Sync all local master repositories with remote.
 # Note: (call git_sync_local_branch for every repository and sync the master
 #        branch).
-# Note: to have a list of repositories, call `git_find_my_repositories myuser`
+# Note: to have a list of repositories, call `git_repos_find_mine myuser`
 #
-#   e.g. > git_sync_local_master_repositories `git_find_my_repositories myuser`
+#   e.g. > git_repos_sync_local_master `git_repos_find_mine myuser`
 #
-git_sync_local_master_repositories(){
+git_repos_sync_local_master(){
   REPOSOTORIES="$@"
 
   HOME_DIR=`pwd`
@@ -239,7 +242,7 @@ alias gcoaa="gcoa --amend"
 alias gcoaane="gcoa --amend --no-edit"
 alias gdhh="git diff HEAD^ HEAD"
 alias gfa="git fetch --all"
-alias gfmr="git_find_my_repositories"
+alias gfmr="git_repos_find_mine"
 alias gg="git grep"
 alias gk="git ka"
 alias gp="git push -f"
