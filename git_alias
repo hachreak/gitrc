@@ -25,8 +25,21 @@ green='\e[0;31m'
 blue='\e[0;34m'
 NC='\e[0m' # No Color'
 
+# Check if the repository is mine.
+#
+# The function looks the list of remote repositories and find if the `origin`
+# repository contains the pattern `user/repository_name.git`
+git_is_my_repository(){
+  USER="$1"
+  ORIGIN=${2:-origin}
+  DEFAULT_REPOSITORY=$(basename `pwd`)
+  REPOSITORY=${3:-$DEFAULT_REPOSITORY}
+  [ "`git remote -v | grep \"^${ORIGIN}\" | awk '{print $2}' | grep \"${USER}/${i}.git\" | wc -l`" -ne 0 ]
+}
+
 # List all my repositories.
 #
+# Imagine you want to know which of them are your.
 # e.g. in src/ you have your list of repositories
 #    > git_find_my_repositories mynickname
 #      project_1
@@ -38,14 +51,12 @@ NC='\e[0m' # No Color'
 #    > git_find_my_repositories mynickname upstream
 #
 git_find_my_repositories(){
-  REPOSOTORIES=`ls -1d */.git|awk -F"/" '{print $1}'`
   USER="$1"
   ORIGIN=${2:-origin}
+  REPOSOTORIES=`ls -1d */.git|awk -F"/" '{print $1}'`
   for i in $REPOSOTORIES; do
     cd $i
-    if [ "`git remote -v | grep "^${ORIGIN}" | grep "${USER}/${i}" | wc -l`" -ne 0 ]; then
-      echo $i
-    fi
+    git_is_my_repository $USER $ORIGIN $i && echo $i
     cd ..
   done
 }

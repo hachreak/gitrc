@@ -40,7 +40,7 @@ Shortcuts
 * **git f** - git fetch
 * **git ff origin/master** - git fast-forwarding
 * **git k** - see nice version of git log
-* **git_find_my_repositories** - find all my repositories (checking the remote `origin`)
+* **gfmr** or **git_find_my_repositories** `username` - find all repositories associated with the user `username` (checking the remote `origin`). Note: you can also specify with remote repository check (e.g. `gfmr myuser upstream`).
 * **git_find_merged_branch_in_repositories** - Find branches that can be removed
 * **git_resolve_conflicts_delete** - Resolve conflict on deleted files on master branch
 * **git_sync_local_master_repositories** - Sync all local master brances with the remote ones. You need to pass the list of branches (you can also use `git_find_my_repositories myuser` to automatically generate it)
