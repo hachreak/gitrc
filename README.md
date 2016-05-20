@@ -38,15 +38,16 @@ Shortcuts
 * **gcoane** - git commit -a -s --no-edit
 * **gdhh** - git diff HEAD^ HEAD
 * **gfa** - git fetch --all
-* **gfmr** or **git_repos_find_mine** `username` - find all repositories associated with the user `username` (checking the remote `origin`). Note: you can also specify with remote repository check (e.g. `gfmr myuser upstream`).
+* **gfmr** or **git_repos_find_mine** [username] - find all repositories associated with the user `username` (checking the remote `origin`). Note: you can also specify with remote repository check (e.g. `gfmr myuser upstream`).
 * **git co** - git checkout
 * **git f** - git fetch
 * **git ff origin/master** - git fast-forwarding
 * **git k** - see nice version of git log
-* **git_repo_is_mine `username`** - Check if the repository is mine
-* **git_repos_find_mine `username`** - find which repository inside the current directory are mine
-* **git_repos_find_merged_branch** - Find branches that can be removed
-* **git_repos_sync_local_master** - Sync all local master brances with the remote ones. You need to pass the list of branches (you can also use `git_repos_find_mine myuser` to automatically generate it)
+* **git_repo_is_mine [username]** - Check if the repository is mine
+* **git_repo_sync_local_branch [branch_name] [upstream_repo] [origin_repo]** - sync local `branch_name` to upstream `branch_name` and push changes also to origin repository. [WARNING] if wrongly used, can destroy your repository history. See docs in code.
+* **git_repos_find_mine [username]** - find which repository inside the current directory are mine
+* **git_repos_find_merged_branch** - Find branches that are already merged. Tipical usage: git_repos_find_merged_branch `git_repos_find_mine myusername`
+* **git_repos_sync_local_master** - Sync all local master brances with the remote ones. You need to pass the list of branches (you can also use `git_repos_find_mine myuser` to automatically generate the list of repositories).
 * **git_resolve_conflicts_delete** - Resolve conflict on deleted files on master branch
 * **gk** or **git ka** - see nice version of git log for all branches
 * **gp** - git push -f

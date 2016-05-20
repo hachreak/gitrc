@@ -21,7 +21,8 @@
 #
 # Git utils
 
-green='\e[0;31m'
+red='\e[0;31m'
+green='\e[0;32m'
 blue='\e[0;34m'
 NC='\e[0m' # No Color'
 
@@ -67,19 +68,25 @@ git_repos_find_mine(){
 # Show the list of repository that have some branch currently merged.
 #
 # e.g. in src/ you have your list of repositories
-#    > git_repos_find_merged_branch
+#    > git_repos_find_merged_branch `git_repos_find_mine myusername`
 #    [blinker]
 #    develop
 #    * master
 #    [invenio-base]
 #    3482_remove_plotextrator
 #    * master
+#    [invenio-openaire]
+#    * improve_example_app
+#    master
 #
-# In this case you can remove (using `gbr`) develop branch from `blinker`
-# project and `3482_remove_plotextrator` from `invenio-base` project.
+# In this case you can remove (using `gbr`) the branch `develop` from the
+# `blinker` project and `3482_remove_plotextrator` from `invenio-base` project.
+# But you should not remove the `improve_example_app` branch because the
+# calculation was made starting from `improve_example_app` itself and not from
+# the master.
 #
 git_repos_find_merged_branch(){
-  REPOSOTORIES=`ls -1d */.git|awk -F"/" '{print $1}'`
+  REPOSOTORIES="$@"
 
   HOME_DIR=`pwd`
   for i in $REPOSOTORIES; do
@@ -125,35 +132,57 @@ git_branch_remove(){
 # In case remote master is different from origin, than sync also the origin
 # Param:
 #  1. (optional) branch to sync. Default: master
-git_sync_local_branch(){
+#  2. (optional) upstream repository. Default: upstream
+#  3. (optional) origin repository. Default: origin
+#  4. (optional) `-f` force option. To reset from upstream and force push on
+#     origin. Default: not used.
+#
+# e.g. git_repo_sync_local_branch master upstream origin -f
+#      It fetch all remote repositories.
+#      It checkout to master.
+#      It fast-forward to upstream/master (if `-f`, then it hard reset instead
+#      of fast-forward).
+#      If you pass the name of the origin repository, then push the changes to
+#      origin/master (if `-f`, then it force the push).
+git_repo_sync_local_branch(){
   BRANCH=${1:-master}
+  UPSTREAM=${2:-upstream}
+  ORIGIN=$3
+  FORCE=$4
+
   # update only if there is not changes not committed
-  ! git diff --quiet HEAD &&  return
+  ! git diff --quiet HEAD && echo -e "${red}[fail]${NC} not committed files" && return
 
   # fetch all repositories
+  echo -e "${green}[fetch]${NC} git fetch --all"
   git fetch --all
 
+  # checkout to the branch
+  echo -e "${green}[checkout]${NC} git checkout $BRANCH"
   git checkout $BRANCH
-  # get tracked branch
-  REMOTE_REPO_BRANCH=`git rev-parse --abbrev-ref --symbolic-full-name @{u}`
-  if [ $? -eq 0 ]; then
-    REMOTE_BRANCH=`echo $REMOTE_REPO_BRANCH | awk -F"/" '{print $2}'`
-    REMOTE_REPO=`echo $REMOTE_REPO_BRANCH | awk -F"/" '{print $1}'`
 
+  if [ "${FORCE}" = "-f" ]; then
+    FORCE="-f"
+    # reset hard to remote branch
+    echo -e "${green}[reset]${NC} git reset --hard $UPSTREAM/$BRANCH"
+    git reset --hard $UPSTREAM/$BRANCH
+  else
+    FORCE=""
     # fast-forward from remote branch
-    git merge --ff-only $REMOTE_REPO/$REMOTE_BRANCH
+    echo -e "${green}[fast-forward]${NC} git merge --ff-only $UPSTREAM/$BRANCH"
+    git merge --ff-only $UPSTREAM/$BRANCH
+  fi
 
-    # if remote is not origin, then sync the origin
-    if [ $REMOTE_REPO != 'origin' ]; then
-      git push origin $BRANCH
-    fi
+  if [ $? -eq 0 ] && [ -n "${ORIGIN}" ]; then
+    echo -e "${green}[push]${NC} git push $ORIGIN $BRANCH $FORCE"
+    git push $ORIGIN $BRANCH $FORCE
   fi
 }
 
 # Git sync all master of local repositories.
 # Sync all local master repositories with remote.
-# Note: (call git_sync_local_branch for every repository and sync the master
-#        branch).
+# Note: (call git_repo_sync_local_branch for every repository and sync the
+#        master branch).
 # Note: to have a list of repositories, call `git_repos_find_mine myuser`
 #
 #   e.g. > git_repos_sync_local_master `git_repos_find_mine myuser`
@@ -166,7 +195,31 @@ git_repos_sync_local_master(){
     echo -e "${blue}[sync]${NC} $i"
     # go to repository
     cd $i
-    git_sync_local_branch
+    git_repo_sync_local_branch master upstream origin
+    # return to home
+    cd $HOME_DIR
+  done
+}
+
+# Checkout all repositories to the master branch.
+git_repos_checkout_master(){
+  REPOSOTORIES="$@"
+
+  HOME_DIR=`pwd`
+  for i in $REPOSOTORIES; do
+    # go to repository
+    cd $i
+
+    # update only if there is not changes not committed
+    git diff --quiet HEAD
+
+    if [ $? -ne 0 ]; then
+      echo -e "${red}[fail]${NC} $i"
+    else
+      echo -e "${blue}[checkout]${NC} $i"
+      git checkout master
+    fi
+
     # return to home
     cd $HOME_DIR
   done
