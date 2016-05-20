@@ -33,7 +33,9 @@ Shortcuts
 * **gccb** - git checkout -b
 * **gcck** - git checkout
 * **gcoa** - git commit -a -s
+* **gcoane** - git commit -a -s --no-edit
 * **gcoaa** - git commit -a -s --amend
+* **gcoaane** - git commit -a -s --amend --no-edit
 * **gdhh** - git diff HEAD^ HEAD
 * **gfa** - git fetch --all
 * **git co** - git checkout
