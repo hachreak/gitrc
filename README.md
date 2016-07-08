@@ -44,10 +44,10 @@ Shortcuts
 * **git ff origin/master** - git fast-forwarding
 * **git k** - see nice version of git log
 * **git_repo_is_mine [username]** - Check if the repository is mine
-* **git_repo_sync_local_branch [branch_name] [upstream_repo] [origin_repo]** - sync local `branch_name` to upstream `branch_name` and push changes also to origin repository. [WARNING] if wrongly used, can destroy your repository history. See docs in code.
+* **git_repo_sync_local_branch [branch_name] [upstream_repo] [origin_repo]** - sync local `branch_name` to upstream `branch_name` and push changes also to origin repository. [*WARNING*] if wrongly used, can destroy your repository history. See docs in code.
 * **git_repos_find_mine [username]** - find which repository inside the current directory are mine
-* **git_repos_find_merged_branch** - Find branches that are already merged. Tipical usage: `git_repos_find_merged_branch \`git_repos_find_mine myusername\``
-* **git_repos_sync_local_master** - Sync all local master brances with the remote ones. You need to pass the list of branches (you can also use `git_repos_find_mine myuser` to automatically generate the list of repositories).
+* **git_repos_find_merged_branch** - Find branches that are already merged. *Tipical usage*: git_repos_find_merged_branch `git_repos_find_mine myusername`
+* **git_repos_sync_local_master** - Sync all local master brances with the remote ones. You need to pass the list of branches (you can also use `git_repos_find_mine myuser` to automatically generate the list of repositories). *Tipical usage*: git_repos_sync_local_master `git_repos_find_mine myusername`
 * **git_resolve_conflicts_delete** - Resolve conflict on deleted files on master branch
 * **gk** or **git ka** - see nice version of git log for all branches
 * **gp** - git push -f
