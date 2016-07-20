@@ -4,7 +4,7 @@
 #
 # Leonardo Rossi <leonardo.rossi@studenti.unipr.it>
 #
-# Copyright (C) 2015 Leonardo Rossi.
+# Copyright (C) 2016 Leonardo Rossi.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -280,6 +280,89 @@ git_resolve_conflicts_delete(){
   done
 }
 
+# Erlang bump version
+erlang_bump_version(){
+  # grep old version and app.src filename
+  OLD_VERSION=`grep "{vsn," src/*.app.src|awk -F '"' '{print $2}'`
+  echo
+  APP_SRC=`find src/*.app.src`
+  # Load arguments and options
+  local OPTIND
+  COMMIT_BUMP=0
+  PUSH_REMOTE=0
+  TAG_VERSION=0
+  TAG_SIGN=""
+  TAG_MESSAGE=""
+  while getopts "ghm:rst" FLAG; do
+    case $FLAG in
+      g) COMMIT_BUMP=1;;
+      m) TAG_MESSAGE="${OPTARG}";;
+      r) PUSH_REMOTE=1;;
+      s) TAG_SIGN="-s";;
+      t) TAG_VERSION=1;;
+      \?)
+        # unrecognized option - show help
+        echo "Options: "
+        echo "  -g (create a commit)"
+        echo "  -h (print help)"
+        echo "  -m (specify a message for the tag, note: use \"quote\")"
+        echo "  -r (push to origin)"
+        echo "  -s (sign the tag)"
+        echo "  -t (tag last commit)"
+        return 1
+        ;;
+    esac
+  done
+  echo $TAG_MESSAGE
+  shift $(($OPTIND - 1))
+  case $@ in
+    major) SUB_VAR=0;;
+    minor) SUB_VAR=1;;
+    patch) SUB_VAR=2;;
+    *)
+      echo "erlang_bump_version -[g|m|r|s|t|h] [major|minor|patch]"
+      return 1
+      ;;
+  esac
+  # compute the new version number
+  index=0
+  NEW_VERSION=""
+  RESET_SMALL_VALUES=0
+  for val in $(echo $OLD_VERSION | tr "." " "); do
+    if [ $RESET_SMALL_VALUES = 1 ]; then
+      # reset value (e.g. from 0.9.8 --(major release)-> 1.0.0)
+      val=0
+    fi
+    if [ $SUB_VAR = $index ]; then
+      val=`expr $val + 1`
+      RESET_SMALL_VALUES=1
+    fi
+    # add the point
+    [ $index -gt 0 ] && NEW_VERSION="${NEW_VERSION}."
+    # add the value
+    NEW_VERSION="${NEW_VERSION}${val}"
+    index=`expr $index + 1`
+  done
+  # substitute the old version number with the new one
+  sed -i "s/{vsn, \"$OLD_VERSION\"}/{vsn, \"$NEW_VERSION\"}/" $APP_SRC
+  if [ $COMMIT_BUMP = 1 ]; then
+    # commit if necessary
+     git commit -a -m "release: v${NEW_VERSION}" && \
+      [ $PUSH_REMOTE = 1 ] && gpo
+    # set tag if necessary
+    if [ $COMMIT_BUMP = 1 ] && [ -n "$TAG_VERSION" ]; then
+      if [ -n "$TAG_MESSAGE" ]; then
+        echo $TAG_MESSAGE
+        HEADER="Version $NEW_VERSION\n\n"
+        echo "set message"
+        git tag -a v${NEW_VERSION} $TAG_SIGN -m "$(echo -e ${HEADER}${TAG_MESSAGE})"
+      else
+        git tag v${NEW_VERSION} $TAG_SIGN
+      fi
+      [ $PUSH_REMOTE = 1 ] && git push origin --tags
+    fi
+  fi
+}
 
 alias ga="git add ."
 alias gb="git branch -vv"

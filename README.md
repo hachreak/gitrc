@@ -23,7 +23,7 @@ configuration in your environment.
 
 
 Shortcuts
--------------------------
+---------
 * **ga** - git add .
 * **gb** - git branch
 * **gbm [branch]** - lists branches already merged into [branch] (default: the active branch). Useful to find which branch can be deleted because merged. If you don't specify the branch, as default it takes the current one.
@@ -54,3 +54,72 @@ Shortcuts
 * **gpo** - git push -f origin
 * **gs** - git status
 * **gt** or **git_track** [remote] [remote_branch] - set remote tracked branch (without arguments, it set as tracked branch from origin with the same name of active branch)
+
+Tools
+-----
+
+#### erlang_bump_version
+
+This utility is useful in case your `erlang` module follow the
+[Semantic Versioning 2.0](http://semver.org/).
+
+It's able to automatically extract the current version and increment the
+appropriate number.
+
+At this moment it support only the `vsn` in the `.app.src` file.
+To apply also the version upgrade to the release, set the `rebar.config` as:
+
+```
+...
+{relx, [
+  {release,
+    {'mymodule', "vsn"},
+    [
+      ...
+    ]
+  }
+]}
+```
+
+`erlang_bump_version -[g|m|r|s|t|h] [major|minor|patch]`
+
+Parameter (REQUIRED):
+ - **major** Create a new major release.
+ - **minor** Create a minor release.
+ - **patch** Create a patch release.
+
+Options:
+ - **-g** (create a commit)
+ - **-h** (print help)
+ - **-m** (specify a message for the tag, note: use "quote")
+ - **-r** (push to origin)
+ - **-s** (sign the tag)
+ - **-t** (tag last commit)
+
+**Usage example**
+
+```bash
+cd /path/to/my/project
+erlang_bump_version -g -t -m "- Feature1\n- Feature 2" -r major
+```
+
+The utility will:
+ - upgrade the major release to e.g. 2.0.0
+ - git commit the changes
+ - create a tag associate with a defined message.
+ - push the commit and the tag or `origin`
+
+The tag message has the form of:
+
+```
+Version x.x.x
+
+- Feature1
+- Feature2
+```
+
+Note: your module should already follow the `semver` in the moment you run
+the utility.
+
+**If it's your first time your run the script, set manually the erlang `vsn`
+version to a initial value like 0.0.0**
