@@ -348,7 +348,7 @@ erlang_bump_version(){
   if [ $COMMIT_BUMP = 1 ]; then
     # commit if necessary
      git commit -a -m "release: v${NEW_VERSION}" && \
-      [ $PUSH_REMOTE = 1 ] && gpo
+      [ $PUSH_REMOTE = 1 ] && git push -f origin
     # set tag if necessary
     if [ $COMMIT_BUMP = 1 ] && [ -n "$TAG_VERSION" ]; then
       if [ -n "$TAG_MESSAGE" ]; then
