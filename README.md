@@ -58,7 +58,7 @@ Shortcuts
 Tools
 -----
 
-#### erlang_bump_version
+## erlang_bump_version
 
 This utility is useful in case your `erlang` module follow the
 [Semantic Versioning 2.0](http://semver.org/).
@@ -123,3 +123,14 @@ the utility.
 
 **If it's your first time your run the script, set manually the erlang `vsn`
 version to a initial value like 0.0.0**
+
+## erlang_rebar3_lock_deps
+
+To be able to lock dependency on your project.
+It simply upgrade all your dependencies and add `rebar.lock` file inside the
+git repository.
+In the end it will create a new commit for you.
+
+```bash
+erlang_rebar3_lock_deps
+```

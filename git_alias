@@ -364,6 +364,15 @@ erlang_bump_version(){
   fi
 }
 
+erlang_rebar3_lock_deps(){
+  rm rebar.lock
+  rm _build -Rf
+  sed -i '/rebar.lock/d' .gitignore
+  rebar3 get-deps
+  git add rebar.lock
+  git commit -a -m "rebar3: lock dependencies"
+}
+
 alias ga="git add ."
 alias gb="git branch -vv"
 alias gbm="git branch --merged"
