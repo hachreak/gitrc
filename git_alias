@@ -373,6 +373,12 @@ erlang_rebar3_lock_deps(){
   git commit -a -m "rebar3: lock dependencies"
 }
 
+erlang_rebar3_unlock_deps(){
+  git rm rebar.lock
+  echo "rebar.lock" >> .gitignore
+  git commit -a -m "rebar3: unlock dependencies"
+}
+
 alias ga="git add ."
 alias gb="git branch -vv"
 alias gbm="git branch --merged"

@@ -126,11 +126,22 @@ version to a initial value like 0.0.0**
 
 ## erlang_rebar3_lock_deps
 
-To be able to lock dependency on your project.
+To be able to lock dependencies on your erlang (rebar3) project.
 It simply upgrade all your dependencies and add `rebar.lock` file inside the
 git repository.
 In the end it will create a new commit for you.
 
 ```bash
 erlang_rebar3_lock_deps
+```
+
+## erlang_rebar3_unlock_deps
+
+To be able to unlock dependencies on your erlang (rebar3) project.
+It simply delete the `rebar.lock` file and it mentions the file in the
+list of files ignored by git.
+In the end it will create a new commit for you.
+
+```bash
+erlang_rebar3_unlock_deps
 ```
